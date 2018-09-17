@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.yevstaf.checkthesun.InfoCardsActivity"
+    tools:showIn="@layout/coordinator_info_cards">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="748dp"
+        android:layout_height="690dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/image_world_map_gray"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ListView
+        android:id="@+id/lvInfoCards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="28.0sp"
+        android:padding="10dp"
+        android:scrollbars="none"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
+
+</android.support.constraint.ConstraintLayout>

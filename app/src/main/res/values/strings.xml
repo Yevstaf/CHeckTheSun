@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">CheckTheSun</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="action_settings">-_-</string>
+    <string-array name="params_sunrise_sunset_api">
+        <item>sunrise</item>
+        <item>sunset</item>
+        <item>solar_noon</item>
+        <item>day_length</item>
+        <item>civil_twilight_begin</item>
+        <item>civil_twilight_end</item>
+        <item>nautical_twilight_begin</item>
+        <item>nautical_twilight_end</item>
+        <item>astronomical_twilight_begin</item>
+        <item>astronomical_twilight_end</item>
+    </string-array>
+    <string name="title_activity_information">InformationActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="author_url">https://github.com/Yevstaf</string>
+
+</resources>

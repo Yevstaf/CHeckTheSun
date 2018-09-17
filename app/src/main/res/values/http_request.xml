@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="httpRequestSunriseSunset" templateMergeStrategy="preserve" translatable="false">https://api.sunrise-sunset.org/json?</string>
+</resources>

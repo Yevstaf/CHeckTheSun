@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.yevstaf.checkthesun.Database.MarkersDataBase;
@@ -52,6 +54,7 @@ public class MapActivity extends AppCompatActivity
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
+
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_drawer_map);
             Toolbar toolbar = findViewById(R.id.toolbar_map);
@@ -62,10 +65,11 @@ public class MapActivity extends AppCompatActivity
             // fab.setOnClickListener();
             fab.setImageResource(R.drawable.ic_check_circle);
             fab.setOnClickListener(new OnFabClickListeners(this,fab,mMap));
-
+            setTitle(R.string.activity_map_title);
 
 
     }
+
     private void setGoogleMapCallback(){
         FragmentManager mFragmentManager = getSupportFragmentManager();
         SupportMapFragment mapFragment =(SupportMapFragment)mFragmentManager.findFragmentById(R.id.mapFragment);

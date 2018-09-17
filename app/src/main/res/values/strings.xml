@@ -1,4 +1,6 @@
 <resources>
+    <string name="activity_info_cards_title">CheckTheSun</string>
+    <string name="activity_map_title">Map</string>
     <string name="app_name">CheckTheSun</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="action_settings">-_-</string>
@@ -19,5 +21,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="author_url">https://github.com/Yevstaf</string>
+    <string name="text_view_sunrise">Sunrise</string>
+    <string name="text_view_sunset">Sunset</string>
+    <string name="text_view_details">Details</string>
 
 </resources>

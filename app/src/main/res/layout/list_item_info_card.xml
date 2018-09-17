@@ -65,21 +65,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_sunrise" />
+                    app:srcCompat = "@drawable/ic_sunrise" />
 
                 <ImageView
                     android:id="@+id/iv_line"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    app:srcCompat="@drawable/line" />
+                    android:src = "@drawable/line" />
 
                 <ImageView
                     android:id="@+id/iv_sunset"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_sunset" />
+                    app:srcCompat ="@drawable/ic_sunset" />
 
             </LinearLayout>
 
@@ -97,7 +97,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Sunrise" />
+                    android:text="@string/text_view_sunrise" />
 
                 <TextView
                     android:id="@+id/tv_day_length"
@@ -105,8 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:gravity="center"
-                    android:text="TextView" />
+                    android:gravity="center" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -115,7 +114,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Sunset" />
+                    android:text="@string/text_view_sunset" />
             </LinearLayout>
 
             <LinearLayout
@@ -189,7 +188,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_save" />
+                    app:srcCompat = "@drawable/ic_save" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -202,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Details" />
+                    android:text="@string/text_view_details" />
 
                 <ImageView
                     android:id="@+id/iv_details"
@@ -212,14 +211,6 @@
                     app:srcCompat="@drawable/places_ic_search" />
             </LinearLayout>
         </LinearLayout>
-
-        <ListView
-            android:id="@+id/lv_details"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-        </ListView>
 
     </LinearLayout>
 

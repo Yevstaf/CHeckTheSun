@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.yevstaf.checkthesun.Database.MarkersDataBase;
 import com.example.yevstaf.checkthesun.SunriseSunsetServices.SunriseSunset;
 import com.example.yevstaf.checkthesun.SunriseSunsetServices.SunriseSunsetItem;
+import com.example.yevstaf.checkthesun.adapter_factories.ListViewAdaptersAbstractFactory;
 import com.example.yevstaf.checkthesun.http_services.Item;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -52,16 +53,12 @@ public class InfoCardsActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
-
         ListView lvInfoCards = findViewById(R.id.lvInfoCards);
-        SimpleAdapter adapter = makeInfoCardAdapterUsingSunriseSunsetAPI();
+
+        SimpleAdapter adapter = getAdapterFromFactory();
         if(adapter != null)
             lvInfoCards.setAdapter(adapter);
-       // lvInfoCards.setOnItemClickListener();
 
-          SQLiteDatabase database = getMarkersDB();
-          LinkedList<Item> items = getItemsFromDB(database);
         this.setTitle(R.string.activity_info_cards_title);
     }
 
@@ -71,7 +68,7 @@ public class InfoCardsActivity extends AppCompatActivity
         super.onPostResume();
         ListView lvInfoCards = findViewById(R.id.lvInfoCards);
 
-        SimpleAdapter adapter = makeInfoCardAdapterUsingSunriseSunsetAPI();
+        SimpleAdapter adapter = getAdapterFromFactory();
         if(adapter != null)
             lvInfoCards.setAdapter(adapter);
     }
@@ -131,81 +128,12 @@ public class InfoCardsActivity extends AppCompatActivity
         return true;
     }
 
-    public SimpleAdapter makeInfoCardAdapterUsingSunriseSunsetAPI() {
-        SimpleAdapter adapter = null;
-            try {
-                String from[] = {"Sunrise", "Sunset", "DayLength","Place"};
-                int[] to = {R.id.tv_sunrise, R.id.tv_sunset, R.id.tv_day_length,R.id.tv_place};
-                ArrayList<Map<String, Object>> dataForAdapter = selectDataForAdapter();
-                adapter = new SimpleAdapter(this,dataForAdapter,R.layout.list_item_info_card,from,to);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    private SimpleAdapter getAdapterFromFactory(){
+        ListViewAdaptersAbstractFactory factory = new ListViewAdaptersAbstractFactory(this);
+        SimpleAdapter adapter = factory.selectAdapter(R.id.lvInfoCards);
         return adapter;
     }
 
-    private ArrayList<Map<String, Object>> selectDataForAdapter() throws JSONException {
-        ArrayList<Map<String, Object>> dataForAdapter = new ArrayList<>();
-
-        SQLiteDatabase database = getMarkersDB();
-        LinkedList<Item> items = getItemsFromDB(database);
-
-        Iterator<Item> iterator = items.iterator();
-        while(iterator.hasNext()){
-            Item each = iterator.next();
-            HashMap<String,Object> viewData = sunriseSunsetDataIntoMap(each);
-            dataForAdapter.add(viewData);
-        }
-        return dataForAdapter;
-    }
-
-    private SQLiteDatabase getMarkersDB(){
-        Context context = getApplicationContext();
-        SQLiteOpenHelper helper = new MarkersDataBase(context);
-        SQLiteDatabase database = helper.getWritableDatabase();
-        return database;
-    }
-
-    private Cursor selectAllRows(SQLiteDatabase database){
-        Cursor cursor =  database.rawQuery("Select * from " + MarkersDataBase.TABLE_MARKERS_NAME, null);
-        return cursor;
-    }
-
-    private LinkedList<Item> getItemsFromDB(SQLiteDatabase database){
-        LinkedList<Item> items = new LinkedList<>();
-        SunriseSunset sunriseSunset = new SunriseSunset(getApplicationContext());
-        Cursor cursor = selectAllRows(database);
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            do {
-                LatLng coordinates = getLatLngFromCursor(cursor);
-                SunriseSunsetItem item = sunriseSunset.getItem(coordinates);
-                items.add(item);
-            } while (cursor.moveToNext());
-        }else{
-            Toast.makeText(this,"No place was selected",Toast.LENGTH_LONG);
-        }
-        return items;
-    }
-
-    private LatLng getLatLngFromCursor(Cursor cursor){
-        Double latitude = cursor.getDouble(cursor.getColumnIndex(MarkersDataBase.TABLE_MARKERS_ROW_LATITUDE));
-        Double longitude = cursor.getDouble(cursor.getColumnIndex(MarkersDataBase.TABLE_MARKERS_ROW_LONGITUDE));
-        LatLng coordinates = new LatLng(latitude, longitude);
-        return coordinates;
-    }
-
-    private HashMap<String,Object> sunriseSunsetDataIntoMap(Item each) throws JSONException {
-        String sunrise = each.getString(SunriseSunset.LINE_SUNRISE);
-        String sunset = each.getString(SunriseSunset.LINE_SUNSET);
-        String dayLength = each.getString(SunriseSunset.LINE_DAY_LENGTH);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("Sunrise",sunrise);
-        map.put("Sunset",sunset);
-        map.put("DayLength",dayLength);
-
-        return map;
-    }
 
 
 

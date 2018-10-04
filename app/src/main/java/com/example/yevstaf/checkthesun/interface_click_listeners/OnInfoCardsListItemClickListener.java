@@ -5,41 +5,33 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import com.example.yevstaf.checkthesun.R;
+import com.example.yevstaf.checkthesun.interface_events.OnListIlemClickEventOpenOrCloseDetails;
+import com.example.yevstaf.checkthesun.interface_events.OnListItemClickEvent;
+
+import java.util.ArrayList;
 
 /**
  * Created by Vladyslav on 04.10.2018.
  */
 
 public class OnInfoCardsListItemClickListener implements AdapterView.OnItemClickListener {
-    protected boolean isDetailsActive;
+    ArrayList<OnListItemClickEvent> events;
+
     public OnInfoCardsListItemClickListener() {
-        isDetailsActive = false;
+        this.events = new ArrayList<>();
+        addAllNeededEvents();
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        LinearLayout detailsLayout = view.findViewById(R.id.details_layout);
-        changeLayoutVisibility(detailsLayout);
-        changeLayoutLooks(view);
+        runEvents(view);
     }
-
-    protected void changeLayoutVisibility(LinearLayout layout){
-        if(isDetailsActive){
-            layout.setVisibility(View.GONE);
-            isDetailsActive = false;
-        }else{
-            layout.setVisibility(View.VISIBLE);
-            isDetailsActive = true;
+    private void runEvents(View view){
+        for(OnListItemClickEvent each : events){
+            each.runEvent(view);
         }
     }
-        protected void changeLayoutLooks(View view){
-            if(isDetailsActive){
-                int color = view.getResources().getColor(R.color.black_transparent);
-                LinearLayout bottomLayout = view.findViewById(R.id.bottom_layout);
-                bottomLayout.setBackgroundColor(color);
-            }else{
-                LinearLayout bottomLayout = view.findViewById(R.id.bottom_layout);
-                bottomLayout.setBackgroundColor(Color.WHITE);
-            }
-        }
+    private void addAllNeededEvents(){
+        events.add(new OnListIlemClickEventOpenOrCloseDetails());
+    }
 }

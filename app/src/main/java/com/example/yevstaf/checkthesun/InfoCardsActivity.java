@@ -11,11 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 import com.example.yevstaf.checkthesun.adapter_factories.InfoCardsListAbstractFactory;
+import com.example.yevstaf.checkthesun.adapter_factories.TimeZoneSpinnerAdaptersFactory;
 import com.example.yevstaf.checkthesun.interface_click_listeners.OnInfoCardsListItemClickListener;
+import com.example.yevstaf.checkthesun.interface_click_listeners.OnTimeZonesSpinnerClickListener;
 
 public class InfoCardsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,11 +40,13 @@ public class InfoCardsActivity extends AppCompatActivity
             this.setTitle(R.string.activity_info_cards_title);
 
             fillListViewInBackground();
+            fillSpinner();
+            configureClickListeners();
             ListView lvInfoCards = findViewById(R.id.lvInfoCards);
             lvInfoCards.setOnItemClickListener(new OnInfoCardsListItemClickListener());
     }
 
-    private SimpleAdapter getAdapterFromFactory(){
+    private SimpleAdapter getListViewAdapterFromFactory(){
         InfoCardsListAbstractFactory factory = new InfoCardsListAbstractFactory(this);
         SimpleAdapter adapter = factory.selectAdapter(R.id.lvInfoCards);
         return adapter;
@@ -50,24 +56,30 @@ public class InfoCardsActivity extends AppCompatActivity
             @Override
             public void run() {
                 ListView lvInfoCards = findViewById(R.id.lvInfoCards);
-                SimpleAdapter adapter = getAdapterFromFactory();
+                SimpleAdapter adapter = getListViewAdapterFromFactory();
                 if(adapter != null)
                     lvInfoCards.setAdapter(adapter);
             }
         });
         thread.run();
     }
-
-
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        ListView lvInfoCards = findViewById(R.id.lvInfoCards);
-
-        SimpleAdapter adapter = getAdapterFromFactory();
+    private void fillSpinner(){
+        Spinner spinner = findViewById(R.id.spinner_time_zone);
+        ArrayAdapter adapter = getSpinnerAdapterFromFactory();
         if(adapter != null)
-            lvInfoCards.setAdapter(adapter);
+            spinner.setAdapter(adapter);
+    }
+    private ArrayAdapter getSpinnerAdapterFromFactory(){
+        TimeZoneSpinnerAdaptersFactory factory = new TimeZoneSpinnerAdaptersFactory(this);
+        ArrayAdapter adapter = factory.getAdapter(TimeZoneSpinnerAdaptersFactory.DEFAULT_ADAPTER);
+        return adapter;
+    }
+
+    private void configureClickListeners(){
+        ListView lvInfoCards = findViewById(R.id.lvInfoCards);
+        lvInfoCards.setOnItemClickListener(new OnInfoCardsListItemClickListener());
+        Spinner timeZones = findViewById(R.id.spinner_time_zone);
+        timeZones.setOnItemSelectedListener(new OnTimeZonesSpinnerClickListener(this));
     }
 
     @Override

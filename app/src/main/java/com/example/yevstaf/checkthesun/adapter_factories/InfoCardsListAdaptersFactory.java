@@ -5,18 +5,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.SimpleAdapter;
-import android.widget.Switch;
 import android.widget.Toast;
-
 import com.example.yevstaf.checkthesun.Database.MarkersDataBase;
 import com.example.yevstaf.checkthesun.R;
 import com.example.yevstaf.checkthesun.SunriseSunsetServices.SunriseSunset;
 import com.example.yevstaf.checkthesun.SunriseSunsetServices.SunriseSunsetItem;
 import com.example.yevstaf.checkthesun.http_services.Item;
+import com.example.yevstaf.checkthesun.time_zone_servise.TimeZoneCorrector;
 import com.google.android.gms.maps.model.LatLng;
-
 import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,9 +22,11 @@ import java.util.Map;
 
 /**
  * Created by Vladyslav on 24.09.2018.
+ * Missing time zone validator, be careful to write correctly
  */
 
 public class InfoCardsListAdaptersFactory implements AdaptersFactory {
+
     public static final int DEFAULT_ADAPTER = 0;
     public static final String VIEW_SUNRISE = "Sunrise";
     public static final String VIEW_SUNSET = "Sunset";
@@ -40,24 +39,36 @@ public class InfoCardsListAdaptersFactory implements AdaptersFactory {
     public static final String VIEW_ASTRONOMICAL_TWILIGHT_BEGIN = "Astronomical twilight begin";
     public static final String VIEW_ASTRONOMICAL_TWILIGHT_END = "Astronomical twilight end";
     private Context context;
+    private static String timeZone;
+
+    public static void setTimeZone(String timeZone) {
+        InfoCardsListAdaptersFactory.timeZone = timeZone;
+    }
 
     public InfoCardsListAdaptersFactory(Context context) {
         this.context = context;
+        timeZone = "GMT";
     }
+
 
     @Override
     public SimpleAdapter getAdapter(int mod) {
         switch (mod){
             case (DEFAULT_ADAPTER):
-                return makeInfoCardAdapterUsingSunriseSunsetAPI();
+                SimpleAdapter adapter = null;
+                    try {
+                        adapter = makeInfoCardAdapterUsingSunriseSunsetAPI();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                return adapter;
 
         }
         return null;
     }
 
-    private SimpleAdapter makeInfoCardAdapterUsingSunriseSunsetAPI() {
-        SimpleAdapter adapter = null;
-        try {
+    private SimpleAdapter makeInfoCardAdapterUsingSunriseSunsetAPI() throws JSONException {
+        SimpleAdapter adapter;
             String from[] =
                     {VIEW_SUNRISE,
                             VIEW_SUNSET,
@@ -79,16 +90,11 @@ public class InfoCardsListAdaptersFactory implements AdaptersFactory {
                     R.id.tv_astronomical_twilight_end_info,
                     R.id.tv_nautical_twilight_begin_info,
                     R.id.tv_nautical_twilight_end_info};
+
             ArrayList<Map<String, Object>> dataForAdapter = selectDataForAdapter();
             adapter = new SimpleAdapter(context,dataForAdapter,R.layout.list_item_info_card,from,to);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return adapter;
     }
-
-
-
 
     private ArrayList<Map<String, Object>> selectDataForAdapter() throws JSONException {
         ArrayList<Map<String, Object>> dataForAdapter = new ArrayList<>();
@@ -146,7 +152,7 @@ public class InfoCardsListAdaptersFactory implements AdaptersFactory {
         String dayLength = each.getString(SunriseSunset.LINE_DAY_LENGTH);
         String sn = each.getString(SunriseSunset.LINE_SOLAR_NOON);
         String ctb = each.getString(SunriseSunset.LINE_CIVIL_TWILIGHT_BEGIN);
-        String cte = each.getString(SunriseSunset.LINE_CIVIL_TWLIGHT_END);
+        String cte = each.getString(SunriseSunset.LINE_CIVIL_TWILIGHT_END);
         String atb = each.getString(SunriseSunset.LINE_ASTRONOMICAL_TWILIGHT_BEGIN);;
         String ate = each.getString(SunriseSunset.LINE_ASTRONOMICAL_TWILIGHT_END);
         String ntb = each.getString(SunriseSunset.LINE_NAUTICAL_TWILIGHT_BEGIN);
@@ -155,7 +161,6 @@ public class InfoCardsListAdaptersFactory implements AdaptersFactory {
         HashMap<String,Object> map = new HashMap<>();
         map.put(VIEW_SUNRISE,sunrise);
         map.put(VIEW_SUNSET,sunset);
-        map.put(VIEW_DAY_LENGTH,dayLength);
         map.put(VIEW_SOLAR_NOON,sn);
         map.put(VIEW_CIVIL_TWILIGHT_BEGIN,ctb);
         map.put(VIEW_CIVIL_TWLIGHT_END,cte);
@@ -163,6 +168,19 @@ public class InfoCardsListAdaptersFactory implements AdaptersFactory {
         map.put(VIEW_ASTRONOMICAL_TWILIGHT_END,ate);
         map.put(VIEW_NAUTICAL_TWILIGHT_BEGIN,ntb);
         map.put(VIEW_NAUTICAL_TWILIGHT_END,nte);
+        correctTimeAccordingToTimeZone(map);
+        map.put(VIEW_DAY_LENGTH,dayLength); // day length has a different format
+        return map;
+
+    }
+
+    protected HashMap<String,Object> correctTimeAccordingToTimeZone(HashMap<String,Object> map){
+        for(String key : map.keySet()){
+            TimeZoneCorrector corrector = new TimeZoneCorrector(timeZone);
+            String each = (String)map.get(key);
+            each = corrector.correctTimeZone(each);
+            map.put(key,each);
+        }
         return map;
     }
 

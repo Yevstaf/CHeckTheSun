@@ -1,12 +1,9 @@
 package com.example.yevstaf.checkthesun.SunriseSunsetServices;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.yevstaf.checkthesun.R;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Vladyslav on 30.07.2018.
@@ -23,14 +20,14 @@ public class SunriseSunset {
         public static final String LINE_SOLAR_NOON = "solar_noon";
         public static final String LINE_DAY_LENGTH = "day_length";
         public static final String LINE_CIVIL_TWILIGHT_BEGIN = "civil_twilight_begin";
-        public static final String LINE_CIVIL_TWLIGHT_END = "civil_twilight_end";
+        public static final String LINE_CIVIL_TWILIGHT_END = "civil_twilight_end";
         public static final String LINE_NAUTICAL_TWILIGHT_BEGIN = "nautical_twilight_begin";
         public static final String LINE_NAUTICAL_TWILIGHT_END = "nautical_twilight_end";
         public static final String LINE_ASTRONOMICAL_TWILIGHT_BEGIN = "astronomical_twilight_begin";
-        public static final String LINE_ASTRONOMICAL_TWILIGHT_END= "astronomical_twilight_end";
+        public static final String LINE_ASTRONOMICAL_TWILIGHT_END = "astronomical_twilight_end";
     public SunriseSunsetItem getItem(LatLng coordinates) {
             String url = makeURL(coordinates);
-            SunriseSunsetRequest request = new SunriseSunsetRequest();
+            SunriseSunsetGETRequest request = new SunriseSunsetGETRequest();
             String respondLine = request.executeGetReauest(url);
         return new SunriseSunsetItem(respondLine);
     }

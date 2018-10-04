@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
  * Created by Vladyslav on 29.07.2018.
  */
 
-public class SunriseSunsetRequest {
+public class SunriseSunsetGETRequest {
 
     public String executeGetReauest(String url) {
         HTTPGetRequest request = new HTTPGetRequest();

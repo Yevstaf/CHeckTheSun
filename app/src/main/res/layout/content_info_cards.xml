@@ -16,15 +16,27 @@
         app:srcCompat="@drawable/image_world_map_gray"
         tools:layout_editor_absoluteY="0dp" />
 
-    <ListView
-        android:id="@+id/lvInfoCards"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="28.0sp"
-        android:padding="10dp"
-        android:scrollbars="none"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/spinner_time_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ListView
+            android:id="@+id/lvInfoCards"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="28.0sp"
+            android:padding="10dp"
+            android:scrollbars="none"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

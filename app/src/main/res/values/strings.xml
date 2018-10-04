@@ -24,5 +24,11 @@
     <string name="text_view_sunrise">Sunrise</string>
     <string name="text_view_sunset">Sunset</string>
     <string name="text_view_details">Details</string>
-
+    <string name="text_civil_twilight_begin">Civil twilight begin:</string>
+    <string name="text_civil_twilight_end">Civil twilight end:</string>
+    <string name="text_nautical_twilight_begin">Nautical twilight begin:</string>
+    <string name="text_nautical_twilight_end">Nautical twilight end:</string>
+    <string name="text_astronomical_twilight_begin">Astronomical twilight begin:</string>
+    <string name="text_astronomical_twiligt_end">Astronomical twilight end:</string>
+    <string name="text_solar_noon">Solar noon:</string>
 </resources>

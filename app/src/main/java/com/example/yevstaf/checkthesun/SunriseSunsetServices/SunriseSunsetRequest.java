@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 public class SunriseSunsetRequest {
 
-    public String getRequestResult(String url) {
+    public String executeGetReauest(String url) {
         HTTPGetRequest request = new HTTPGetRequest();
         String response = "No response";
         try {
@@ -23,4 +23,5 @@ public class SunriseSunsetRequest {
         }
         return response;
     }
+
 }

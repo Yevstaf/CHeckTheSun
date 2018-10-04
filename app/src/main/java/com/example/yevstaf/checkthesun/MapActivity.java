@@ -1,11 +1,7 @@
 package com.example.yevstaf.checkthesun;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -19,13 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.yevstaf.checkthesun.Database.MarkersDataBase;
-import com.example.yevstaf.checkthesun.google_map_events.LoadMarkersEvent;
-import com.example.yevstaf.checkthesun.google_map_events.LoadMarkersEventFromDatabase;
+import com.example.yevstaf.checkthesun.google_map_events.LoadMarkersFromDatabaseEvent;
 import com.example.yevstaf.checkthesun.google_map_services.OnPlaceSelectedListener;
 import com.example.yevstaf.checkthesun.interface_click_listeners.OnFabClickListeners;
 import com.example.yevstaf.checkthesun.permission_managers.LocationPermissionManager;
@@ -50,7 +42,7 @@ public class MapActivity extends AppCompatActivity
 
     FusedLocationProviderClient mFusedLocationClient;
     LocationCallback mLocationCallback;
-    PlaceAutocompleteFragment autocompleteFragment;
+    PlaceAutocompleteFragment searchFragment;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +53,11 @@ public class MapActivity extends AppCompatActivity
             setSupportActionBar(toolbar);
             setGoogleMapCallback();
             initialiseMapSearchFragment();
-            FloatingActionButton fab = findViewById(R.id.fab);
-            // fab.setOnClickListener();
-            fab.setImageResource(R.drawable.ic_check_circle);
-            fab.setOnClickListener(new OnFabClickListeners(this,fab,mMap));
             setTitle(R.string.activity_map_title);
+
+                FloatingActionButton fab = findViewById(R.id.fab);
+                fab.setImageResource(R.drawable.ic_check_circle);
+                fab.setOnClickListener(new OnFabClickListeners(this,fab,mMap));
 
 
     }
@@ -76,7 +68,7 @@ public class MapActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
     }
     private void initialiseMapSearchFragment(){
-        autocompleteFragment = (PlaceAutocompleteFragment)
+        searchFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
     }
 
@@ -85,11 +77,14 @@ public class MapActivity extends AppCompatActivity
         mMap = googleMap;
         mMap.setOnMapClickListener(new OnMapClickListener(this,mMap));
         mMap.setOnMarkerClickListener(new OnMarkerClickListener(this,mMap));
-        autocompleteFragment.setOnPlaceSelectedListener(new OnPlaceSelectedListener(this,mMap));
+        searchFragment.setOnPlaceSelectedListener(new OnPlaceSelectedListener(this,mMap));
+        new LoadMarkersFromDatabaseEvent(this).runEvent(googleMap);
+        enableDeviceLocation();
+    }
+    private void enableDeviceLocation(){
         mLocationCallback = new com.example.yevstaf.checkthesun.google_map_services.LocationCallback();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         setMyLocationEnabled(mMap);
-        new LoadMarkersEventFromDatabase(this).runEvent(googleMap);
     }
 
     private void setMyLocationEnabled(GoogleMap googleMap) {

@@ -1,15 +1,8 @@
 package com.example.yevstaf.checkthesun;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,22 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
-import com.example.yevstaf.checkthesun.Database.MarkersDataBase;
-import com.example.yevstaf.checkthesun.SunriseSunsetServices.SunriseSunset;
-import com.example.yevstaf.checkthesun.SunriseSunsetServices.SunriseSunsetItem;
-import com.example.yevstaf.checkthesun.adapter_factories.ListViewAdaptersAbstractFactory;
-import com.example.yevstaf.checkthesun.http_services.Item;
-import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
+import com.example.yevstaf.checkthesun.adapter_factories.InfoCardsListAbstractFactory;
+import com.example.yevstaf.checkthesun.interface_click_listeners.OnInfoCardsListItemClickListener;
 
 public class InfoCardsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,14 +33,31 @@ public class InfoCardsActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        ListView lvInfoCards = findViewById(R.id.lvInfoCards);
+            this.setTitle(R.string.activity_info_cards_title);
 
-        SimpleAdapter adapter = getAdapterFromFactory();
-        if(adapter != null)
-            lvInfoCards.setAdapter(adapter);
-
-        this.setTitle(R.string.activity_info_cards_title);
+            fillListViewInBackground();
+            ListView lvInfoCards = findViewById(R.id.lvInfoCards);
+            lvInfoCards.setOnItemClickListener(new OnInfoCardsListItemClickListener());
     }
+
+    private SimpleAdapter getAdapterFromFactory(){
+        InfoCardsListAbstractFactory factory = new InfoCardsListAbstractFactory(this);
+        SimpleAdapter adapter = factory.selectAdapter(R.id.lvInfoCards);
+        return adapter;
+    }
+    private void fillListViewInBackground(){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ListView lvInfoCards = findViewById(R.id.lvInfoCards);
+                SimpleAdapter adapter = getAdapterFromFactory();
+                if(adapter != null)
+                    lvInfoCards.setAdapter(adapter);
+            }
+        });
+        thread.run();
+    }
+
 
 
     @Override
@@ -127,13 +124,6 @@ public class InfoCardsActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    private SimpleAdapter getAdapterFromFactory(){
-        ListViewAdaptersAbstractFactory factory = new ListViewAdaptersAbstractFactory(this);
-        SimpleAdapter adapter = factory.selectAdapter(R.id.lvInfoCards);
-        return adapter;
-    }
-
 
 
 

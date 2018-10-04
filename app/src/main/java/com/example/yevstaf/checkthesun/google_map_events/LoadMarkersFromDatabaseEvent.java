@@ -13,10 +13,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Created by Vladyslav on 15.09.2018.
  */
 
-public class LoadMarkersEventFromDatabase implements LoadMarkersEvent {
+public class LoadMarkersFromDatabaseEvent implements LoadMarkersEvent {
     Context context;
 
-    public LoadMarkersEventFromDatabase(Context context) {
+    public LoadMarkersFromDatabaseEvent(Context context) {
         this.context = context;
     }
 

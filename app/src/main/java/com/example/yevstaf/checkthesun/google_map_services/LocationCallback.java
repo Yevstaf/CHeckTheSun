@@ -19,12 +19,7 @@ public class LocationCallback extends com.google.android.gms.location.LocationCa
         if (locationList.size() > 0) {
             //The last location in the list is the newest
             Location location = locationList.get(locationList.size() - 1);
-            //Place current location marker
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-            //starting database from here because we need user's location coordinates with user's location
-            Log.v("Database: " ,latLng.toString());
-            //move map camera
 
         }
     }

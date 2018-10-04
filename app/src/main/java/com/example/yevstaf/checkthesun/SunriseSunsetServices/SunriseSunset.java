@@ -31,8 +31,7 @@ public class SunriseSunset {
     public SunriseSunsetItem getItem(LatLng coordinates) {
             String url = makeURL(coordinates);
             SunriseSunsetRequest request = new SunriseSunsetRequest();
-            String respondLine = request.getRequestResult(url);
-            Log.v("SunriseSunset",url);
+            String respondLine = request.executeGetReauest(url);
         return new SunriseSunsetItem(respondLine);
     }
 

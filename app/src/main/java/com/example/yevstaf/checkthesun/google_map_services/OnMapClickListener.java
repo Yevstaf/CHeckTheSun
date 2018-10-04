@@ -29,7 +29,6 @@ public class OnMapClickListener implements GoogleMap.OnMapClickListener {
     }
     @Override
     public void onMapClick(LatLng latLng) {
-        Log.v("SunriseSunset"," OnMarkerClockListener: lat = " + latLng.latitude + " longitude = " + latLng.longitude);
         for(OnMapClickEvent event : eventsList){
             event.runEvent(googleMap,latLng);
         }

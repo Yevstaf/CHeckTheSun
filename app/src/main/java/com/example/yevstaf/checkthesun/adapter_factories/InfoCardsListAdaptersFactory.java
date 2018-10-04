@@ -27,11 +27,21 @@ import java.util.Map;
  * Created by Vladyslav on 24.09.2018.
  */
 
-public class InfoCardsAdaptersFactory implements AdaptersFactory {
+public class InfoCardsListAdaptersFactory implements AdaptersFactory {
     public static final int DEFAULT_ADAPTER = 0;
-    Context context;
+    public static final String VIEW_SUNRISE = "Sunrise";
+    public static final String VIEW_SUNSET = "Sunset";
+    public static final String VIEW_SOLAR_NOON = "Solar noon";
+    public static final String VIEW_DAY_LENGTH = "Day length";
+    public static final String VIEW_CIVIL_TWILIGHT_BEGIN = "Civil twilight begin";
+    public static final String VIEW_CIVIL_TWLIGHT_END = "Civil twilight end";
+    public static final String VIEW_NAUTICAL_TWILIGHT_BEGIN = "Nautical twilight begin";
+    public static final String VIEW_NAUTICAL_TWILIGHT_END = "Nautical twilight end";
+    public static final String VIEW_ASTRONOMICAL_TWILIGHT_BEGIN = "Astronomical twilight begin";
+    public static final String VIEW_ASTRONOMICAL_TWILIGHT_END = "Astronomical twilight end";
+    private Context context;
 
-    public InfoCardsAdaptersFactory(Context context) {
+    public InfoCardsListAdaptersFactory(Context context) {
         this.context = context;
     }
 
@@ -48,8 +58,27 @@ public class InfoCardsAdaptersFactory implements AdaptersFactory {
     private SimpleAdapter makeInfoCardAdapterUsingSunriseSunsetAPI() {
         SimpleAdapter adapter = null;
         try {
-            String from[] = {"Sunrise", "Sunset", "DayLength","Place"};
-            int[] to = {R.id.tv_sunrise, R.id.tv_sunset, R.id.tv_day_length,R.id.tv_place};
+            String from[] =
+                    {VIEW_SUNRISE,
+                            VIEW_SUNSET,
+                            VIEW_DAY_LENGTH,
+                            VIEW_SOLAR_NOON,
+                            VIEW_CIVIL_TWILIGHT_BEGIN,
+                            VIEW_CIVIL_TWLIGHT_END,
+                            VIEW_ASTRONOMICAL_TWILIGHT_BEGIN,
+                            VIEW_ASTRONOMICAL_TWILIGHT_END,
+                            VIEW_NAUTICAL_TWILIGHT_BEGIN,
+                            VIEW_NAUTICAL_TWILIGHT_END};
+            int[] to = {R.id.tv_sunrise,
+                    R.id.tv_sunset,
+                    R.id.tv_day_length,
+                    R.id.tv_solar_noon_info,
+                    R.id.tv_civil_twilight_begin_info,
+                    R.id.tv_civil_twilight_end_info,
+                    R.id.tv_astronomical_twilight_begin_info,
+                    R.id.tv_astronomical_twilight_end_info,
+                    R.id.tv_nautical_twilight_begin_info,
+                    R.id.tv_nautical_twilight_end_info};
             ArrayList<Map<String, Object>> dataForAdapter = selectDataForAdapter();
             adapter = new SimpleAdapter(context,dataForAdapter,R.layout.list_item_info_card,from,to);
         } catch (JSONException e) {
@@ -115,11 +144,25 @@ public class InfoCardsAdaptersFactory implements AdaptersFactory {
         String sunrise = each.getString(SunriseSunset.LINE_SUNRISE);
         String sunset = each.getString(SunriseSunset.LINE_SUNSET);
         String dayLength = each.getString(SunriseSunset.LINE_DAY_LENGTH);
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("Sunrise",sunrise);
-        map.put("Sunset",sunset);
-        map.put("DayLength",dayLength);
+        String sn = each.getString(SunriseSunset.LINE_SOLAR_NOON);
+        String ctb = each.getString(SunriseSunset.LINE_CIVIL_TWILIGHT_BEGIN);
+        String cte = each.getString(SunriseSunset.LINE_CIVIL_TWLIGHT_END);
+        String atb = each.getString(SunriseSunset.LINE_ASTRONOMICAL_TWILIGHT_BEGIN);;
+        String ate = each.getString(SunriseSunset.LINE_ASTRONOMICAL_TWILIGHT_END);
+        String ntb = each.getString(SunriseSunset.LINE_NAUTICAL_TWILIGHT_BEGIN);
+        String nte = each.getString(SunriseSunset.LINE_NAUTICAL_TWILIGHT_END);
 
+        HashMap<String,Object> map = new HashMap<>();
+        map.put(VIEW_SUNRISE,sunrise);
+        map.put(VIEW_SUNSET,sunset);
+        map.put(VIEW_DAY_LENGTH,dayLength);
+        map.put(VIEW_SOLAR_NOON,sn);
+        map.put(VIEW_CIVIL_TWILIGHT_BEGIN,ctb);
+        map.put(VIEW_CIVIL_TWLIGHT_END,cte);
+        map.put(VIEW_ASTRONOMICAL_TWILIGHT_BEGIN,atb);
+        map.put(VIEW_ASTRONOMICAL_TWILIGHT_END,ate);
+        map.put(VIEW_NAUTICAL_TWILIGHT_BEGIN,ntb);
+        map.put(VIEW_NAUTICAL_TWILIGHT_END,nte);
         return map;
     }
 

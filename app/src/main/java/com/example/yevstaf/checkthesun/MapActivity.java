@@ -2,6 +2,7 @@ package com.example.yevstaf.checkthesun;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.example.yevstaf.checkthesun.google_map_events.LoadMarkersFromDatabaseEvent;
 import com.example.yevstaf.checkthesun.google_map_services.OnPlaceSelectedListener;
 import com.example.yevstaf.checkthesun.interface_click_listeners.OnFabClickListeners;
+import com.example.yevstaf.checkthesun.interface_click_listeners.OnMapNavMenuClickListener;
 import com.example.yevstaf.checkthesun.permission_managers.LocationPermissionManager;
 import com.example.yevstaf.checkthesun.google_map_services.OnMapClickListener;
 import com.example.yevstaf.checkthesun.google_map_services.OnMarkerClickListener;
@@ -31,9 +33,10 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MapActivity extends AppCompatActivity
-        implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener{
+        implements OnMapReadyCallback{
     private GoogleMap mMap;
 
     private static final int LOCATION_UPDATE_INTERVAL = 6000000;
@@ -58,7 +61,8 @@ public class MapActivity extends AppCompatActivity
                 FloatingActionButton fab = findViewById(R.id.fab);
                 fab.setImageResource(R.drawable.ic_check_circle);
                 fab.setOnClickListener(new OnFabClickListeners(this,fab,mMap));
-
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_map);
+        navigationView.setNavigationItemSelectedListener(new OnMapNavMenuClickListener(this,mMap));
 
     }
 
@@ -80,9 +84,15 @@ public class MapActivity extends AppCompatActivity
         searchFragment.setOnPlaceSelectedListener(new OnPlaceSelectedListener(this,mMap));
         new LoadMarkersFromDatabaseEvent(this).runEvent(googleMap);
         enableDeviceLocation();
+        enableSideBarMenu();// side bar uses google map for location functionality
     }
+        protected void enableSideBarMenu(){
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_map);
+            navigationView.setNavigationItemSelectedListener(new OnMapNavMenuClickListener(this,mMap));
+        }
+
     private void enableDeviceLocation(){
-        mLocationCallback = new com.example.yevstaf.checkthesun.google_map_services.LocationCallback();
+        mLocationCallback = new com.example.yevstaf.checkthesun.google_map_services.LocationCallback(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         setMyLocationEnabled(mMap);
     }
@@ -168,28 +178,6 @@ public class MapActivity extends AppCompatActivity
         if (mFusedLocationClient != null) {
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);
         }
-    }
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_map);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override

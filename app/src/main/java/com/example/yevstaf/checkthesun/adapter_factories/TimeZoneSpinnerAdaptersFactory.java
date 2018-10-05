@@ -33,10 +33,21 @@ public class TimeZoneSpinnerAdaptersFactory {
 
     public ArrayAdapter<String> adapterWithAvaliablesTimeZones(){
             List<String> list = new ArrayList<>();
-            String[] timeZones = TimeZone.getAvailableIDs();
+            String[] timeZones = {"Etc/GMT+0",
+                    "Etc/GMT+1",
+                    "Etc/GMT+2",
+                    "Etc/GMT+3",
+                    "Etc/GMT+4",
+                    "Etc/GMT+5",
+                    "Etc/GMT+6",
+                    "Etc/GMT+7",
+                    "Etc/GMT+8",
+                    "Etc/GMT+9",
+                    "Etc/GMT+10",
+                    "Etc/GMT+11",
+                    "Etc/GMT+12",};
             for(String each : timeZones){
                 list.add(each);
-                Log.v("Time zone:",each);
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,list);
             return adapter;

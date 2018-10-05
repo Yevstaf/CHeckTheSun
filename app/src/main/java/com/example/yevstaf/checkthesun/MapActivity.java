@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,6 +58,11 @@ public class MapActivity extends AppCompatActivity
             setGoogleMapCallback();
             initialiseMapSearchFragment();
             setTitle(R.string.activity_map_title);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_map);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
                 FloatingActionButton fab = findViewById(R.id.fab);
                 fab.setImageResource(R.drawable.ic_check_circle);

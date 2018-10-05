@@ -35,10 +35,11 @@ public class OnInfoCardsNavMenuClickListener implements NavigationView.OnNavigat
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-         if (id == R.id.nav_delete) {
-             Toast.makeText(context,"No selected markers",Toast.LENGTH_SHORT).show();
-            runClearEvents();
-        }else if (id == R.id.nav_share) {
+//         if (id == R.id.nav_delete) {
+//             Toast.makeText(context,"No selected markers",Toast.LENGTH_SHORT).show();
+//            runClearEvents();
+//        }else
+            if (id == R.id.nav_share) {
              runShareEvents();
          }
 

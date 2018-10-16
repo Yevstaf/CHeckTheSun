@@ -31,7 +31,7 @@ public class TimeZoneSpinnerAdaptersFactory {
         return null;
     }
 
-    public ArrayAdapter<String> adapterWithAvaliablesTimeZones(){
+    protected ArrayAdapter<String> adapterWithAvaliablesTimeZones(){
             List<String> list = new ArrayList<>();
             String[] timeZones = {"Etc/GMT+0",
                     "Etc/GMT+1",

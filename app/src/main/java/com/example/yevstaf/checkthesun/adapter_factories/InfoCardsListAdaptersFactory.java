@@ -146,7 +146,7 @@ public class InfoCardsListAdaptersFactory implements AdaptersFactory {
         return coordinates;
     }
 
-    private HashMap<String,Object> sunriseSunsetDataIntoMap(Item each) throws JSONException {
+    protected HashMap<String,Object> sunriseSunsetDataIntoMap(Item each) throws JSONException {
         String sunrise = each.getString(SunriseSunset.LINE_SUNRISE);
         String sunset = each.getString(SunriseSunset.LINE_SUNSET);
         String dayLength = each.getString(SunriseSunset.LINE_DAY_LENGTH);

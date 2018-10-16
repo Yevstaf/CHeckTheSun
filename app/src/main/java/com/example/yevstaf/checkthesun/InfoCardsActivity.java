@@ -20,9 +20,13 @@ import com.example.yevstaf.checkthesun.interface_click_listeners.OnInfoCardsList
 import com.example.yevstaf.checkthesun.interface_click_listeners.OnInfoCardsNavMenuClickListener;
 import com.example.yevstaf.checkthesun.interface_click_listeners.OnTimeZonesSpinnerClickListener;
 
+import java.net.URL;
+
 public class InfoCardsActivity extends AppCompatActivity {
     private final String TAG = "SunriseSunset";
-
+    ListView lvInfoCards;
+    //SimpleAdapter adapter;
+    Spinner timeZones;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,33 +38,16 @@ public class InfoCardsActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_info_cards);
         navigationView.setNavigationItemSelectedListener(new OnInfoCardsNavMenuClickListener(this));
             this.setTitle(R.string.activity_info_cards_title);
 
-            fillListViewInBackground();
-            fillSpinner();
-            configureClickListeners();
-            ListView lvInfoCards = findViewById(R.id.lvInfoCards);
-            lvInfoCards.setOnItemClickListener(new OnInfoCardsListItemClickListener());
-    }
+        lvInfoCards = findViewById(R.id.lvInfoCards);
+        timeZones = findViewById(R.id.spinner_time_zone);
 
-    private SimpleAdapter getListViewAdapterFromFactory(){
-        InfoCardsListAbstractFactory factory = new InfoCardsListAbstractFactory(this);
-        SimpleAdapter adapter = factory.selectAdapter(R.id.lvInfoCards);
-        return adapter;
-    }
-    private void fillListViewInBackground(){
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ListView lvInfoCards = findViewById(R.id.lvInfoCards);
-                SimpleAdapter adapter = getListViewAdapterFromFactory();
-                if(adapter != null)
-                    lvInfoCards.setAdapter(adapter);
-            }
-        });
-        thread.run();
+        fillSpinner();
+        configureClickListeners();
     }
     private void fillSpinner(){
         Spinner spinner = findViewById(R.id.spinner_time_zone);
@@ -75,10 +62,10 @@ public class InfoCardsActivity extends AppCompatActivity {
     }
 
     private void configureClickListeners(){
-        ListView lvInfoCards = findViewById(R.id.lvInfoCards);
         lvInfoCards.setOnItemClickListener(new OnInfoCardsListItemClickListener());
-        Spinner timeZones = findViewById(R.id.spinner_time_zone);
+        lvInfoCards.setOnItemClickListener(new OnInfoCardsListItemClickListener());
         timeZones.setOnItemSelectedListener(new OnTimeZonesSpinnerClickListener(this));
+
     }
 
     @Override
@@ -101,16 +88,11 @@ public class InfoCardsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
 }

@@ -26,6 +26,10 @@ public class OnListItemClickEventChangeTimeZone implements OnListItemClickEvent 
     public void runEvent(View view) {
         String timeZone = ((TextView)view).getText().toString();
         ListView lvInfoCards = ((AppCompatActivity)context).findViewById(R.id.lvInfoCards);
+
+
+
+
         changeListViewAdapterAccordingToTimeZone(lvInfoCards,timeZone);
     }
     protected void changeListViewAdapterAccordingToTimeZone(ListView listView, String timeZone){
